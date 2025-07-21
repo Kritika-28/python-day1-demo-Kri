@@ -19,7 +19,7 @@ from browser import document, html
 
 def say_hello(event):
     name = document["name_input"].value
-    document["output"].textContent = f">>> print('Hello {name}')\nHello {name}"
+    document["output"].textContent = f">>> Hello {name}"
 
 document["submit_btn"].bind("click", say_hello)
   </script>
