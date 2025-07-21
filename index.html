@@ -2,26 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Python Day 1 Demo</title>
+  <title>Python Day 1 Demo (Real Python)</title>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.10.5/brython.min.js"></script>
+  <style>
+    body {
+      font-family: Consolas, monospace;
+      background: #f0f0f0;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+    }
+    #console {
+      background: black;
+      color: lime;
+      padding: 15px;
+      border-radius: 8px;
+      min-height: 200px;
+      white-space: pre-wrap;
+      margin-bottom: 15px;
+    }
+    input, button {
+      font-family: inherit;
+      padding: 8px 12px;
+      margin-right: 10px;
+      font-size: 14px;
+    }
+    #controls {
+      text-align: center;
+    }
+  </style>
 </head>
 <body onload="brython()">
-  <h1>Welcome to Python Day 1 Demo</h1>
+  <h1>Python Day 1 Demo</h1>
 
-  <label for="name_input">What is your name? </label>
-  <input type="text" id="name_input" />
-  <button id="submit_btn">Submit</button>
+  <div id="console">>>> </div>
 
-  <pre id="output"></pre>
+  <div id="controls">
+    <input type="text" id="input_box" placeholder="Enter Python expression" />
+    <button id="run_btn">Run</button>
+    <button id="clear_btn">Clear</button>
+  </div>
 
   <script type="text/python">
 from browser import document, html
 
-def say_hello(event):
-    name = document["name_input"].value
-    document["output"].textContent = f">>> Hello {name}"
+console = document["console"]
+input_box = document["input_box"]
 
-document["submit_btn"].bind("click", say_hello)
+def run_code(event):
+    code = input_box.value
+    if code.strip() == "":
+        return
+    console.textContent += code + "\n"
+    try:
+        result = eval(code)
+        if result is not None:
+            console.textContent += str(result) + "\n"
+    except:
+        try:
+            exec(code)
+        except Exception as e:
+            console.textContent += f"Error: {e}\n"
+    console.textContent += ">>> "
+    input_box.value = ""
+
+def clear_console(event):
+    console.textContent = ">>> "
+
+document["run_btn"].bind("click", run_code)
+document["clear_btn"].bind("click", clear_console)
+
+input_box.bind("keypress", lambda e: run_code(e) if e.keyCode==13 else None)
   </script>
 </body>
 </html>
