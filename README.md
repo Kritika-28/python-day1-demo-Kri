@@ -1,2 +1,2 @@
-# python-day1-demo
+# Day1 of 100 days of Python
 
